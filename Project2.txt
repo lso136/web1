@@ -1,0 +1,175 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include <Windows.h>
+
+char sound[10][5] = { "궁", "상", "각", "치", "우", "궁", "상", "각", "치", "우" };
+int number[10] = { 49, 50, 51, 52, 53, 49, 50, 51, 52, 53 };
+int result[10], pos3, setting = 4, numtype = 1;
+
+int main(void) {
+	system("tiTle 금마 연습 프로그램");
+	int num;
+
+	while (1)
+	{
+		printf("0. 뒤로가기  1. 5중주  2. 7중주  3. 9중주 ( 2타 )  4. 설정\n\n");
+		num = getch();
+
+		switch (num)
+		{
+		case 49:
+			first();
+			break;
+		case 50:
+			second();
+			break;
+		case 51:
+			third();
+			break;
+		case 52:
+			fourth();
+			break;
+		default:
+			exit(0);
+		}
+	}
+}
+
+void random(int num) {
+	srand(time(NULL));
+	char tmp[5];
+	int i, tmp2;
+
+	for (i = 0; i < 5; i++)
+	{
+		int pos1 = rand() % 5;
+		int pos2 = rand() % 5;
+
+		if (num > 5) {
+			strcpy_s(tmp, 5, sound[pos1 + 5]);
+			strcpy_s(sound[pos1 + 5], 5, sound[pos2 + 5]);
+			strcpy_s(sound[pos2 + 5], 5, tmp);
+			tmp2 = number[pos1 + 5];
+			number[pos1 + 5] = number[pos2 + 5];
+			number[pos2 + 5] = tmp2;
+		}
+
+		strcpy_s(tmp, 5, sound[pos1]);
+		strcpy_s(sound[pos1], 5, sound[pos2]);
+		strcpy_s(sound[pos2], 5, tmp);
+		tmp2 = number[pos1];
+		number[pos1] = number[pos2];
+		number[pos2] = tmp2;
+	}
+
+	for (i = 0; i < num; i++)
+	{
+		if (num == 9) {
+			if(numtype ==1) printf("%c ", number[i]);
+			else printf("%s ", sound[i]);
+
+			if (i == setting) printf("\n");
+			else if (i == 8) {
+				pos3 = (rand() % 8) + 1;
+				printf("\t\t%d", pos3);
+			}
+		}
+		else printf("%s ", sound[i]);
+	}
+	printf("\n");
+}
+
+int first() {
+	while (1)
+	{
+		random(5);
+
+		for (int i = 0; i < 5; i++)
+		{
+			result[i] = getche();
+
+			if (result[i] == 48) {
+				printf("\n\n");
+				return 0;
+			}
+			else if (result[i] != number[i]) {
+				printf("\t틀렸습니다");
+				break;
+			}
+		}
+		printf("\n\n");
+	}
+}
+
+int second() {
+	while (1)
+	{
+		random(7);
+
+		for (int i = 0; i < 7; i++)
+		{
+			result[i] = getche();
+
+			if (result[i] == 48) {
+				printf("\n\n");
+				return 0;
+			}
+			else if (result[i] != number[i]) {
+				printf("\t틀렸습니다");
+				break;
+			}
+		}
+		printf("\n\n");
+	}
+}
+
+int third() {
+	while (1)
+	{
+		random(9);
+
+		for (int i = 0; i < pos3; i++)
+		{
+			result[i] = getche();
+
+			if (result[i] == 48) {
+				printf("\n\n");
+				return 0;
+			}
+			else if (result[i] != number[i + 9 - pos3]) {
+				printf("\t틀렸습니다");
+				break;
+			}
+		}
+		printf("\n\n");
+	}
+}
+
+int fourth() {
+	int num;
+
+	printf("\t\t9중주 셋팅\n\n1. 궁상각치우 궁상각치  2. 궁상각치 우궁상각\n3. 12345 1234\t\t4. 1234 51234\n");
+	num = getch();
+
+	if (num == 49) {
+		setting = 4;
+		numtype = 0;
+	}
+	else if (num == 50) {
+		setting = 3;
+		numtype = 0;
+	}
+	else if (num == 51) {
+		setting = 4;
+		numtype = 1;
+	}
+	else if (num == 52) {
+		setting = 3;
+		numtype = 1;
+	}
+	else printf("설정 취소\n");
+
+	printf("\n");
+}
